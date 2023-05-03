@@ -56,6 +56,7 @@ const fullIndexerBalancePagination = async (indexer: any, address: string) => {
       txs.push(...txHistory.balances)
   }
 
+  console.log(txs)
   return txs
 }
 
@@ -89,13 +90,16 @@ const Collections = (props: any) => {
 
       balances.map((nft: any) => {
         if((nft.contractType == 'ERC1155' || nft.contractType == 'ERC721') && nft.tokenMetadata && nft.tokenMetadata.image){
+          console.log('NFT')
           nfts.push({ 
             image: nft.tokenMetadata.image, 
             name: nft.tokenMetadata.name, 
             contractAddress: nft.contractAddress, 
             quantity: nft.balance
           })
-        }
+        }else {
+          console.log('else')
+        } 
       })
 
       return {success: true, NFTs: nfts}
@@ -146,10 +150,6 @@ const Explorer = () => {
   const [searchQuery, setSearchQuery] = React.useState<any>('')
   const [network, setNetwork] = React.useState('polygon')
 
-  React.useEffect(() => {
-    document.body.style.background = 'linear-gradient(180deg, #fff 0%, #2E22BE 160%) !important'
-  }, [theme])
-
   return (
     <div>
       <br/>
@@ -187,7 +187,7 @@ const Explorer = () => {
             <br/>
             <Placeholder size="md" />
           </Box>
-        </Box> : NFTs.length > 0 ?  <div className="grid-container">{NFTs}</div> : isSearching ? <Text>Nothing to show</Text> : null
+        </Box> : NFTs.length > 0 ?  <div className="grid-container">{NFTs}</div> : !isSearching ? <Text>Nothing to show</Text> : null
       } 
     </div>
   );
